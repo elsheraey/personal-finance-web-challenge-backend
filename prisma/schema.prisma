@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  email         String         @unique
+  hash          String
+  refreshTokens RefreshToken[]
+
+  goal Goal[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId Int   @map("user_id")
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  token String @unique
+  jti   String @unique
+
+  @@map("refresh_tokens")
+}
+
+model Goal {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId Int  @map("user_id")
+  user   User @relation(fields: [userId], references: [id])
+
+  name String
+
+  amount Int
+  date   DateTime
+
+  monthlyDeposit Int @map("monthly_deposit")
+
+  @@map("goals")
+}
