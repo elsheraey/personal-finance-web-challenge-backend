@@ -47,10 +47,10 @@ model Goal {
 
   name String
 
-  amount Int
+  amount Float
   date   DateTime
 
-  monthlyDeposit Int @map("monthly_deposit")
+  monthlyDeposit Float @map("monthly_deposit")
 
   @@map("goals")
 }
