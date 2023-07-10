@@ -1,14 +1,16 @@
+import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsJWT,
   IsNotEmpty,
   IsString,
-  MinLength,
+  MinLength
 } from 'class-validator';
 
 export class AuthDto {
   @IsEmail()
   @IsNotEmpty()
+  @Transform(({ value }) => value.toLowerCase())
   email: string;
 
   @IsNotEmpty()
